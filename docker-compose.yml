@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  redis:
+    image: redis:3.2
+    container_name: hipster-robot-redis
+    volumes:
+      - ./docker/data/redis:/data
+    ports:
+      - "6379:6379"
+  mongo:
+    image: mongo:3.4
+    container_name: hipster-robot-mongo
+    volumes:
+      - ./docker/data/mongo:/data/db
+    ports:
+      - "27017:27017"
+  dev:
+    build: .
+    container_name: hipster-robot-dev
+    command: node_modules/.bin/gulp
+    volumes:
+     - .:/usr/src/app
+    depends_on:
+      - redis
+      - mongo
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - MONGODB_URL=mongodb://mongo:27017
+    ports:
+      - "4000:4000"

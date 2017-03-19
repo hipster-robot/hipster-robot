@@ -1,0 +1,19 @@
+@import 'base';
+
+.messages {
+  max-height: 250px;
+  overflow: auto;
+
+  .message {
+    padding: 7px;
+    background-color: #eee;
+    transition: background-color .3s;
+  }
+}
+
+.highlight-enter {
+  &.highlight-enter-active {
+    background-color: #ffff99;
+    transition: background-color .3s;
+  }
+}
