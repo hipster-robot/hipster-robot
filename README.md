@@ -1,5 +1,7 @@
 # hipster-robot
 
+[![Build Status](https://travis-ci.org/hipster-robot/hipster-robot.svg?branch=master)](https://travis-ci.org/hipster-robot/hipster-robot)
+
 The website for Hipster Robot, a chatrobot -- and more.
 
 ## Run
