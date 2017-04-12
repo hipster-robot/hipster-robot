@@ -40,6 +40,9 @@ const webpackConfig = {
     ]
   },
   plugins: [
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development' // This is the default, not an override
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'
     })
