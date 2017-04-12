@@ -1,5 +1,13 @@
 @import 'base';
 
+img#hipster-robot {
+  max-height: 250px;
+
+  @media screen and (min-width: 768px) {
+    max-height: 350px;
+  }
+}
+
 .messages {
   max-height: 250px;
   overflow: auto;

@@ -66,7 +66,7 @@ gulp.task('build-js', gulp.series('compile-js'));
 
 gulp.task('build-css', () => {
   return gulp.src(paths.sass, { sourcemaps: true })
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass({ outputStyle: isProduction ? 'compressed' : 'nested' }).on('error', sass.logError))
     .pipe(gulp.dest(paths.cssOut));
 });
 
