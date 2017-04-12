@@ -27,11 +27,11 @@ def test_bot_400_empty_body():
     req, res = app.test_client.post('/bot', data=json.dumps({}))
     body = json.loads(res.text)
     assert res.status == 400
-    assert body['error'] == '"message" is a required field'
+    assert body['error'] == '"text" is a required field'
 
 
 def test_bot():
-    data = {'message': 'hello'}
+    data = {'text': 'hello'}
     req, res = app.test_client.post('/bot', data=json.dumps(data))
     body = json.loads(res.text)
-    assert body['message'] == 'Hi'
+    assert body['text'] == 'Hi'

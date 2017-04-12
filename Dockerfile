@@ -12,5 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update && apt-get install -y vim
 
 # Install node.js
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
     && apt-get install -y build-essential nodejs
