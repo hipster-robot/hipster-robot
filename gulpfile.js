@@ -4,7 +4,8 @@ const spawn = require('child_process').spawn,
   gulp = require('gulp'),
   sass = require('gulp-sass'),
   del = require('del'),
-  webpack = require('webpack-stream'),
+  webpack = require('webpack'),
+  webpackStream = require('webpack-stream'),
   named = require('vinyl-named');
 
 const paths = {
@@ -14,24 +15,47 @@ const paths = {
   cssOut: 'hr/static/compiled/css',
 };
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+const webpackConfig = {
+  resolve: {
+    extensions: ['.js', '.json', '.jsx']
+  },
+  devtool: isProduction ? 'source-map' : 'eval',
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['env', { modules: false }],
+              'react'
+            ]
+          }
+        }
+      }
+    ]
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    })
+  ]
+};
+
+if (isProduction) {
+  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    sourceMap: true
+  }));
+}
+
 gulp.task('compile-js', () => {
   return gulp.src(paths.js)
     .pipe(named())
-    .pipe(webpack({
-      devtool: 'source-map',
-      module: {
-        loaders: [
-          {
-            test: /\.jsx?/,
-            exclude: /(node_modules|components)/,
-            loader: 'babel-loader',
-            query: {
-              presets: ['es2015', 'react']
-            }
-          }
-        ]
-      }
-    }))
+    .pipe(webpackStream(webpackConfig, webpack))
     .pipe(gulp.dest(paths.jsOut));
 });
 

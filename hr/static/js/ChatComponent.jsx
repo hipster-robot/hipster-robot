@@ -1,42 +1,6 @@
 import React from 'react';
-import ReactDom from 'react-dom';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
-class MessageList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.elems = [];
-  }
-
-  componentDidUpdate() {
-    const latestElem = this.elems[this.elems.length-1];
-    latestElem && latestElem.scrollIntoView && latestElem.scrollIntoView();
-  }
-
-  render() {
-    const listItems = this.props.messages.map((message, i) => {
-      const cname = `text-center message ${message.user}`;
-      return <p
-        key={i}
-        ref={p => { this.elems.push(p); }}
-        className={cname}>
-        {message.message}
-
-      </p>
-    });
-
-    return (
-      <div className="messages">
-        <ReactCSSTransitionGroup
-          transitionName="highlight"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}>
-          {listItems}
-        </ReactCSSTransitionGroup>
-      </div>
-    )
-  }
-};
+import uuid4 from 'uuid/v4';
+import MessageList from './MessageList';
 
 class ChatComponent extends React.Component {
 
@@ -44,7 +8,7 @@ class ChatComponent extends React.Component {
     super(props);
     this.state = {
       input: '',
-      messages: []
+      messages: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -63,22 +27,32 @@ class ChatComponent extends React.Component {
   }
 
   submitMessage() {
+    const message = {
+      id: uuid4(),
+      user: 'me',
+      text: this.state.input,
+    };
+
     this.setState({
       input: '',
-      messages: this.state.messages.concat([{ user: 'me', message: this.state.input }])
+      messages: this.state.messages.concat([message]),
     });
     return fetch('/bot', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message: this.state.input })
+      body: JSON.stringify(message),
     })
     .then(response => response.json())
-    .then(response => {
+    .then((response) => {
       this.setState({
-        messages: this.state.messages.concat([{ user: 'bot', message: response.message }]),
+        messages: this.state.messages.concat([{
+          id: uuid4(), // Generate the server's key client-side. This might change in the future
+          user: 'bot',
+          text: response.text,
+        }]),
       });
     });
   }
@@ -89,15 +63,22 @@ class ChatComponent extends React.Component {
         <MessageList messages={this.state.messages} />
         <form>
           <div className="form-group">
-            <textarea className="form-control"
+            <textarea
+              className="form-control"
               placeholder="Type something"
               value={this.state.input}
               onChange={this.handleChange}
-              onKeyPress={this.handleKeyPress}>
-            </textarea>
+              onKeyPress={this.handleKeyPress}
+            />
           </div>
           <div className="form-group">
-            <button type="button" className="btn btn-default btn-block" onClick={this.submitMessage}>Send</button>
+            <button
+              type="button"
+              className="btn btn-default btn-block"
+              onClick={this.submitMessage}
+            >
+              Send
+            </button>
           </div>
         </form>
       </div>

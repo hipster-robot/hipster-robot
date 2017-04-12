@@ -1,15 +1,13 @@
 import React from 'react';
-import {render} from 'react-dom';
-import ChatComponent from './ChatComponent.jsx';
+import { render } from 'react-dom';
+import ChatComponent from './ChatComponent';
 
-class App extends React.Component {
-  render () {
-    return (
-      <div>
-        <ChatComponent />
-      </div>
-    )
-  }
+function App() {
+  return (
+    <div>
+      <ChatComponent />
+    </div>
+  );
 }
 
-render(<App/>, document.getElementById('app'));
+render(<App />, document.getElementById('app'));

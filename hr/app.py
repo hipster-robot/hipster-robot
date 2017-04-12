@@ -46,9 +46,9 @@ async def index(request):
 @app.route('/bot', methods=['POST'])
 async def bot(request):
     body = request.json
-    if 'message' not in body:
+    if 'text' not in body:
         return response.json(
-            {'error': '"message" is a required field'},
+            {'error': '"text" is a required field'},
             status=400)
-    bot_response = default_bot.get_response(body['message'])
-    return response.json({'message': bot_response.text})
+    bot_response = default_bot.get_response(body['text'])
+    return response.json({'text': bot_response.text})
