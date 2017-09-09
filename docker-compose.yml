@@ -24,8 +24,6 @@ services:
     depends_on:
       - redis
       - mongo
-    environment:
-      - REDIS_URL=redis://redis:6379
-      - MONGODB_URL=mongodb://mongo:27017
+    env_file: .env
     ports:
       - "4000:4000"
