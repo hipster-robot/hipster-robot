@@ -88,7 +88,13 @@ ENV/
 # Rope project settings
 .ropeproject
 
+*.swp
+.vscode/
+
 # Docker files
 docker/
 
 node_modules/
+
+# The "secret" environment keys.
+.env

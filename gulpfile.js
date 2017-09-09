@@ -1,12 +1,10 @@
-'use strict';
-
-const spawn = require('child_process').spawn,
-  gulp = require('gulp'),
-  sass = require('gulp-sass'),
-  del = require('del'),
-  webpack = require('webpack'),
-  webpackStream = require('webpack-stream'),
-  named = require('vinyl-named');
+const spawn = require('child_process').spawn;
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const del = require('del');
+const webpack = require('webpack');
+const webpackStream = require('webpack-stream');
+const named = require('vinyl-named');
 
 const paths = {
   js: 'hr/static/js/**/*.{js,jsx}',
@@ -19,39 +17,39 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const webpackConfig = {
   resolve: {
-    extensions: ['.js', '.json', '.jsx']
+    extensions: ['.js', '.json', '.jsx'],
   },
   devtool: isProduction ? 'source-map' : 'eval',
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|components)/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
               ['env', { modules: false }],
-              'react'
-            ]
-          }
-        }
-      }
-    ]
+              'react',
+            ],
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development' // This is the default, not an override
+      NODE_ENV: 'development', // This is the default, not an override
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    })
-  ]
+      name: 'vendor',
+    }),
+  ],
 };
 
 if (isProduction) {
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    sourceMap: true
+    sourceMap: true,
   }));
 }
 
@@ -80,7 +78,7 @@ gulp.task('watch', () => {
 });
 
 gulp.task('serve', () => {
-  const child = spawn('python', ['main.py'], { stdio: 'inherit' })
+  const child = spawn('python', ['main.py'], { stdio: 'inherit' });
 
   child.on('close', () => {
     process.exit(0);

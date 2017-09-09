@@ -3,11 +3,7 @@ import { render } from 'react-dom';
 import ChatComponent from './ChatComponent';
 
 function App() {
-  return (
-    <div>
-      <ChatComponent />
-    </div>
-  );
+  return <ChatComponent />;
 }
 
 render(<App />, document.getElementById('app'));

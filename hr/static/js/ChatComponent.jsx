@@ -3,7 +3,6 @@ import uuid4 from 'uuid/v4';
 import MessageList from './MessageList';
 
 class ChatComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -45,16 +44,16 @@ class ChatComponent extends React.Component {
       },
       body: JSON.stringify(message),
     })
-    .then(response => response.json())
-    .then((response) => {
-      this.setState({
-        messages: this.state.messages.concat([{
-          id: uuid4(), // Generate the server's key client-side. This might change in the future
-          user: 'bot',
-          text: response.text,
-        }]),
+      .then(response => response.json())
+      .then((response) => {
+        this.setState({
+          messages: this.state.messages.concat([{
+            id: uuid4(), // Generate the server's key client-side. This might change in the future
+            user: 'bot',
+            text: response.text,
+          }]),
+        });
       });
-    });
   }
 
   render() {
@@ -84,7 +83,6 @@ class ChatComponent extends React.Component {
       </div>
     );
   }
-
 }
 
 export default ChatComponent;
