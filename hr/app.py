@@ -2,6 +2,7 @@
 
 """
 import os
+import asyncio
 
 from sanic import Sanic, response
 from sanic_session import RedisSessionInterface, InMemorySessionInterface
@@ -50,5 +51,6 @@ async def bot(request):
         return response.json(
             {'error': '"text" is a required field'},
             status=400)
-    bot_response = default_bot.get_response(body['text'])
+    loop = asyncio.get_event_loop()
+    bot_response = await loop.run_in_executor(None, default_bot.get_response, body['text'])
     return response.json({'text': bot_response.text})
