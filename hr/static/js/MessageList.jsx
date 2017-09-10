@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import PropTypes from 'prop-types';
+import uuid4 from 'uuid/v4';
 
 class MessageList extends React.Component {
   constructor(props) {
@@ -16,13 +17,16 @@ class MessageList extends React.Component {
   render() {
     const listItems = this.props.messages.map((message) => {
       const cname = `text-center message ${message.user}`;
+      const txt = (message.text || '').split('\n').map((item) => {
+        return <span key={uuid4()}>{item}<br /></span>;
+      });
       return (
         <p
           key={message.id}
           ref={p => this.elems.push(p)}
           className={cname}
         >
-          {message.text}
+          {txt}
         </p>
       );
     });

@@ -7,6 +7,7 @@ const webpackStream = require('webpack-stream');
 const named = require('vinyl-named');
 
 const paths = {
+  py: 'hr/**/*.py',
   js: 'hr/static/js/**/*.{js,jsx}',
   jsOut: 'hr/static/compiled/js',
   sass: 'hr/static/sass/**/*.scss',
@@ -77,21 +78,47 @@ gulp.task('watch', () => {
   gulp.watch(paths.sass, gulp.series('clean-css', 'build-css'));
 });
 
-gulp.task('serve', () => {
-  const child = spawn('python', ['main.py'], { stdio: 'inherit' });
+let child;
+gulp.task('serve-py', () => {
+  let promise = Promise.resolve();
+  // Wait for existing child to exit
+  if (child) {
+    let resolve;
+    promise = new Promise((r) => {
+      resolve = r;
+    });
 
-  child.on('close', () => {
-    process.exit(0);
-  });
+    child.on('close', () => {
+      resolve();
+    });
 
-  process.on('SIGINT', () => {
+    child.on('error', () => {
+      resolve();
+    });
+
     child.kill();
-  });
+  }
 
-  process.on('SIGTERM', () => {
-    child.kill();
+  return promise.then(() => {
+    child = spawn('python', ['main.py'], { detached: true, stdio: 'inherit' });
   });
 });
 
+process.on('SIGINT', () => {
+  if (child) child.kill();
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  if (child) child.kill();
+  process.exit(0);
+});
+
+gulp.task('watch-py', () => {
+  gulp.watch(paths.py, gulp.series('serve-py'));
+});
+
+gulp.task('serve', gulp.series('serve-py', 'watch-py'));
+
 gulp.task('build', gulp.series('clean', gulp.parallel('build-js', 'build-css')));
-gulp.task('default', gulp.series('build', gulp.parallel('serve', 'watch')));
+gulp.task('default', gulp.series('build', gulp.parallel('serve')));
