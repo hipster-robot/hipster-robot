@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.7
 
 # Prepare app
 RUN mkdir -p /usr/src/app
@@ -12,5 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN apt-get update && apt-get install -y vim build-essential
 
 # Install node.js
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y nodejs

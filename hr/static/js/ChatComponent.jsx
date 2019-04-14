@@ -6,8 +6,9 @@ class ChatComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: '',
+      text: '',
       messages: [],
+      useWolfram: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -15,7 +16,13 @@ class ChatComponent extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({ input: event.target.value });
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value,
+    });
   }
 
   handleKeyPress(event) {
@@ -26,16 +33,20 @@ class ChatComponent extends React.Component {
   }
 
   submitMessage() {
+    const tags = [];
+    if (!this.state.useWolfram) tags.push('disable_wolfram');
     const message = {
       id: uuid4(),
       user: 'me',
-      text: this.state.input,
+      text: this.state.text,
+      tags,
     };
 
     this.setState({
-      input: '',
+      text: '',
       messages: this.state.messages.concat([message]),
     });
+
     return fetch('/bot', {
       method: 'POST',
       headers: {
@@ -65,15 +76,29 @@ class ChatComponent extends React.Component {
             <textarea
               className="form-control"
               placeholder="Type something"
-              value={this.state.input}
+              name="text"
+              value={this.state.text}
               onChange={this.handleChange}
               onKeyPress={this.handleKeyPress}
             />
           </div>
+          <div className="form-group form-check">
+            <input
+              id="wolfram-check"
+              type="checkbox"
+              name="useWolfram"
+              className="form-check-input"
+              checked={this.state.useWolfram}
+              onChange={this.handleChange}
+            />
+            <label className="form-check-label" htmlFor="wolfram-check">
+              Include Wolfram Alpha answers
+            </label>
+          </div>
           <div className="form-group">
             <button
               type="button"
-              className="btn btn-default btn-block"
+              className="btn btn-primary btn-block"
               onClick={this.submitMessage}
             >
               Send

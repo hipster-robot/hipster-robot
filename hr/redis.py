@@ -17,6 +17,7 @@ class Redis:
     A simple wrapper class that allows you to share a connection
     pool across your application.
     """
+
     _pool = None
 
     async def get_redis_pool(self):

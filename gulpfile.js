@@ -121,4 +121,4 @@ gulp.task('watch-py', () => {
 gulp.task('serve', gulp.series('serve-py', 'watch-py'));
 
 gulp.task('build', gulp.series('clean', gulp.parallel('build-js', 'build-css')));
-gulp.task('default', gulp.series('build', gulp.parallel('serve')));
+gulp.task('default', gulp.series('build', gulp.parallel('serve', 'watch')));

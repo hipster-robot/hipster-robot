@@ -1,8 +1,8 @@
 # hipster-robot
 
-[![Build Status](https://travis-ci.org/hipster-robot/hipster-robot.svg?branch=master)](https://travis-ci.org/hipster-robot/hipster-robot)
+[![Build Status](https://travis-ci.org/dlebech/hipster-robot.svg?branch=master)](https://travis-ci.org/dlebech/hipster-robot)
 
-The website for Hipster Robot, a chatrobot -- and more.
+The website for Hipster Robot, a chatrobot experiment.
 
 ## Run
 
