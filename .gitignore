@@ -98,3 +98,6 @@ node_modules/
 
 # The "secret" environment keys.
 .env
+
+*.pickle
+*.sqlite3
