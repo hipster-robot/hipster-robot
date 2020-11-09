@@ -26,6 +26,7 @@
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-sass": "^4.0.2",
+    "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
@@ -36,7 +37,7 @@
     "webpack-stream": "^4.0.0"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "devDependencies": {
     "eslint": "^4.6.1",
