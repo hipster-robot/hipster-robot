@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.8
 
 # Prepare app
 RUN mkdir -p /usr/src/app
@@ -8,9 +8,12 @@ WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Make sure the English spacy model is present
+RUN python -m spacy download en
+
 # Install Vim
 RUN apt-get update && apt-get install -y vim build-essential
 
 # Install node.js
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs
