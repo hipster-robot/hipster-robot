@@ -8,9 +8,6 @@ WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make sure the English spacy model is present
-RUN python -m spacy download en
-
 # Install Vim
 RUN apt-get update && apt-get install -y vim build-essential
 
