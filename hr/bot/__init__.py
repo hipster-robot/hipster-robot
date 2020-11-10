@@ -16,6 +16,7 @@ default_bot = ChatBot(
         {"import_path": "hr.bot.logic.WolframAlpha"},
     ],
     storage_adapter="chatterbot.storage.SQLStorageAdapter",
+    tagger_language=config.CUSTOM_ENGLISH_CLASS,
     database_uri=config.SQLITE_URL,
     wolfram_alpha_app_id=config.WOLFRAM_ALPHA_APP_ID,
 )
